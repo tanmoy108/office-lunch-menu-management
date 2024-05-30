@@ -1,0 +1,6 @@
+.meshBackground{
+    background: url("../src/assets/images/secondBar.png");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+   }

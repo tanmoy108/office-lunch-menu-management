@@ -1,0 +1,24 @@
+{
+    "Categories":[
+        {
+            "id":1,
+            "value":"All"
+        },
+        {
+            "id":2,
+            "value":"Normal"
+        },
+        {
+            "id":3,
+            "value":"NonVeg"
+        },
+        {
+            "id":4,
+            "value":"Veg"
+        },
+        {
+            "id":5,
+            "value":"Beverage"
+        }
+    ]
+}
