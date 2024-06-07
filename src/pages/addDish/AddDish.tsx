@@ -3,6 +3,7 @@ import Back from "../../assets/images/Back.png";
 import { Link } from "react-router-dom";
 import { IKContext, IKUpload } from "imagekitio-react";
 import axios from "axios";
+import manImage from "../../assets/images/manimage.png"
 
 const categories = [
   {
@@ -119,8 +120,8 @@ const AddDish: FC = () => {
 
 
   return (
-    <div className="px-5 md:px-[72px] 2xl:px-40">
-      <div className="w-16 my-[39px]">
+    <div className="px-5 md:px-10 lg:px-[72px] 2xl:px-40 addNewMeshBackground">
+      <div className="w-16 py-[39px]">
         <Link to={"/"}>
           <img src={Back} alt="back-sign" />
         </Link>
@@ -162,8 +163,8 @@ const AddDish: FC = () => {
                   value={inputField.description}
                 />
               </div>
-              <div className="grid grid-cols-2 gap-5">
-                <div className="flex flex-col mb-[24px]">
+              <div className="grid grid-cols-2 mb-[24px] gap-5">
+                <div className="flex flex-col">
                   <label className="text-[#272D2F] text-[16px] font-medium leading-[24px]">
                     Quantity
                   </label>
@@ -176,7 +177,7 @@ const AddDish: FC = () => {
                     value={inputField.quantity}
                   />
                 </div>
-                <div className="flex flex-col mb-[24px]">
+                <div className="flex flex-col">
                   <label className="text-[#272D2F] text-[16px] font-medium leading-[24px]">
                     Categories
                   </label>
@@ -226,7 +227,7 @@ const AddDish: FC = () => {
               </IKContext>
               <button
                 type="button"
-                className="bg-[#FF5F34] uppercase hover:bg-[#FF3600] rounded-[8px] text-[20px] mt-[37px] w-full py-[16px] text-center text-white font-semibold leading-[30px]"
+                className="bg-[#FF5F34] uppercase hover:bg-[#FF3600] rounded-[8px] text-[20px] w-full py-[16px] text-center text-white font-semibold leading-[30px]"
                 onClick={UploadToDB}
               >
                 Create Dish
@@ -234,7 +235,10 @@ const AddDish: FC = () => {
             </form>
           </div>
         </div>
-        <div>hello</div>
+        <div className="flex justify-center md:justify-end
+        ">
+        <img className="w-[70%] md:w-full xl:w-[80%] 2xl:w-[70%]" src={manImage} />
+        </div>
       </div>
     </div>
   );

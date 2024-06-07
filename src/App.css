@@ -4,3 +4,9 @@
     background-size: cover;
     background-repeat: no-repeat;
    }
+.addNewMeshBackground{
+    background: url("../src/assets/images/new_bg.png");
+    background-position:top;
+    background-size: cover;
+    background-repeat: no-repeat;
+   }

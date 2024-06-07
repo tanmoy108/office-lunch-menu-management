@@ -5,7 +5,7 @@ import person from "../../assets/images/person.svg"
 const Layout: FC = () => {
   return (
     <>
-    <div className='bg-white shadow-custom w-full h-[83px] px-5 md:px-[72px] 2xl:px-40  mb-3'>
+    <div className='bg-white shadow-custom w-full h-[83px] px-5 md:px-[72px] 2xl:px-40 '>
       <div className='h-full flex items-center justify-between'>
          <Link to="/"><div className='text-[#9C791A] text-[20px] sm:text-[25px] font-extrabold leading-[37.5px]'>IT FARM LOGO</div></Link>
          <div className='flex'>
