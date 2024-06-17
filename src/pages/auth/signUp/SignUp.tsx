@@ -1,7 +1,9 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
+import { getResponse } from "../../../lib/checkToken";
+import Cookies from 'js-cookie';
 
 type Inputs = {
   name: string;
@@ -11,7 +13,29 @@ type Inputs = {
   password: string;
 };
 const SignUp: FC = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const accessToken = Cookies.get("access_token");
+
+    const tokensend = async (accessToken: String) => {
+      const res = await getResponse(accessToken);
+      return res;
+    };
+
+    const VerifyToken = async (accessToken: String | null) => {
+      if (accessToken) {
+        const respond = await tokensend(accessToken);
+        if (respond) navigate("/");
+        else navigate("/auth/login");
+      } else {
+        console.log("Access Token not found");
+        navigate("/auth/login");
+      }
+    };
+
+    VerifyToken(accessToken!);
+  }, []);
   const {
     register,
     handleSubmit,

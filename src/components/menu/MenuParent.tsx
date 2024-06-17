@@ -20,7 +20,6 @@ const MenuParent:FC = () => {
 
         const fetchingItem = async ()=>{
             const {data} = await axios.get("http://localhost:5000/api/v1/menu");
-            console.log(data);
             setMenuItems(data)
         }
 

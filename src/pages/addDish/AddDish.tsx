@@ -79,7 +79,6 @@ const AddDish: FC = () => {
   };
 
   const onSuccess = (res: any) => {
-    console.log("Success", res);
     alert("Success");
     setFileUrl(res.url);
   };
@@ -112,7 +111,6 @@ const AddDish: FC = () => {
         "http://localhost:5000/api/v1/menu",
         updatedTotalField
       );
-      console.log(data);
     } catch (error) {
       console.error("Error uploading data", error);
     }
@@ -227,7 +225,7 @@ const AddDish: FC = () => {
               </IKContext>
               <button
                 type="button"
-                className="bg-[#FF5F34] uppercase hover:bg-[#FF3600] rounded-[8px] text-[20px] w-full py-[16px] text-center text-white font-semibold leading-[30px]"
+                className="bg-[#FF5F34] uppercase hover:bg-[#FF3600] rounded-[8px] text-[16px] w-full py-[10px] text-center text-white font-semibold leading-[30px]"
                 onClick={UploadToDB}
               >
                 Create Dish

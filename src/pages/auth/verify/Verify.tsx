@@ -9,11 +9,8 @@ type Inputs = {
 
 const Verify:FC = () => {
     const [searchParams,setSearchParams] = useSearchParams();
-    console.log(searchParams);
     const getId = searchParams.get("id");
     const navigate = useNavigate();
-    console.log(getId);
-
   if (!getId) navigate("/auth/signup");
   const {
     register,

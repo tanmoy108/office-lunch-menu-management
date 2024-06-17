@@ -1,7 +1,9 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
+import { getResponse } from "../../../lib/checkToken";
 
 type Inputs = {
   email: string;
@@ -14,6 +16,29 @@ const Login: FC = () => {
     formState: { errors },
     reset,
   } = useForm<Inputs>();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const accessToken = Cookies.get("access_token");
+
+    const tokensend = async (accessToken: String) => {
+      const res = await getResponse(accessToken);
+      return res;
+    };
+
+    const VerifyToken = async (accessToken: String | null) => {
+      if (accessToken) {
+        const respond = await tokensend(accessToken);
+        if (respond) navigate("/");
+        else navigate("/auth/login");
+      } else {
+        console.log("Access Token not found");
+        navigate("/auth/login");
+      }
+    };
+
+    VerifyToken(accessToken!);
+  }, []);
 
   const onSubmit: SubmitHandler<Inputs> = async (dataInfo) => {
     try {
@@ -32,6 +57,7 @@ const Login: FC = () => {
         if (uploadData.success == true) {
           alert(uploadData.result);
           reset();
+          navigate("/");
         }
       } else {
         alert("Registration failed! Please check the form for errors.");
@@ -40,6 +66,7 @@ const Login: FC = () => {
       console.error("Error during registration:", error);
     }
   };
+
 
   return (
     <section className="bg-[#f0edd7]">
