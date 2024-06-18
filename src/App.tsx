@@ -6,6 +6,7 @@ import AddDish from "./pages/addDish/AddDish";
 import Login from "./pages/auth/login/Login";
 import SignUp from "./pages/auth/signUp/SignUp";
 import Verify from "./pages/auth/verify/Verify";
+import UpdateDish from "./pages/updateDish/UpdateDish";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="addmenu" element={<AddDish />} />
+          <Route path="updatemenu" element={<UpdateDish />} />
           {/* <Route path="contact" element={<Contact />} /> */}
           {/* <Route path="*" element={<NoPage />} /> */}
         </Route>

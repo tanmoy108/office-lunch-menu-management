@@ -9,7 +9,7 @@ export const currentDate = `${year}-${month}-${day}`;
 const LunchDate: FC = () => {
   return (
     <div className="px-5 md:px-[72px] 2xl:px-40 my-7 font-lato text-[16px] font-medium leading-[24px]">
-      {`Lunch Date: ${year}-${month}-${day}`}
+      {`Today Lunch Date: ${year}-${month}-${day}`}
     </div>
   );
 };

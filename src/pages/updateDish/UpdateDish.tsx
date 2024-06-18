@@ -1,32 +1,11 @@
 import { FC, useEffect, useRef, useState } from "react";
 import Back from "../../assets/images/Back.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { IKContext, IKUpload } from "imagekitio-react";
 import axios from "axios";
-import manImage from "../../assets/images/manimage.png";
+import manImage from "../../assets/images/manimage.png"
+import { categories } from "../addDish/AddDish";
 
-export const categories = [
-  {
-    id: 1,
-    name: "Normal",
-    value: "Normal",
-  },
-  {
-    id: 2,
-    name: "NonVeg",
-    value: "NonVeg",
-  },
-  {
-    id: 3,
-    name: "Veg",
-    value: "Veg",
-  },
-  {
-    id: 4,
-    name: "Beverage",
-    value: "Beverage",
-  },
-];
 
 const urlEndpoint = "https://ik.imagekit.io/cmxx5hnyv";
 const publicKey = "public_W/xQwpQ+TpXlVgEAIT/crG3OLgA=";
@@ -49,31 +28,31 @@ const authenticator = async () => {
   }
 };
 
-const AddDish: FC = () => {
-  const [fileUrl, setFileUrl] = useState<string | null>(null);
-  const [inputField, setInputField] = useState({
-    title: "",
-    description: "",
-    quantity: 0,
-    type: "",
-  });
+const UpdateDish: FC = () => {
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const paramId= queryParams.get("id");
+  const paramTitle= queryParams.get("title");
+  const paramDescription= queryParams.get("description");
+  const paramImage= queryParams.get("image");
+  const paramQuantity= queryParams.get("quantity");
+  const paramType= queryParams.get("type"); 
+  const [fileUrl, setFileUrl] = useState<string | null>(paramImage);
   const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [inputField, setInputField] = useState({
+    title: paramTitle,
+    description: paramDescription,
+    quantity: paramQuantity ?? 0,
+    type: paramType,
+  });
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const ikUploadRefTest = useRef<HTMLInputElement>(null);
   const HandleInputFile = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     ikUploadRefTest.current?.click();
   };
-  // const HandleUploadImage = () => {
-  //   if (fileRef.current?.files && fileRef.current.files.length > 0) {
-  //     console.log("hello");
-  //     const uploadedFile = fileRef.current.files[0];
-  //     const catchedURL = URL.createObjectURL(uploadedFile);
-  //     console.log(catchedURL);
-  //   } else {
-  //     console.log("No file selected");
-  //   }
-  // };
+
 
   const onError = (err: any) => {
     console.log("Error", err);
@@ -105,10 +84,10 @@ const AddDish: FC = () => {
   useEffect(() => {
     const { title, description, quantity, type } = inputField;
     if (
-      title.trim() !== "" &&
-      description.trim() !== "" &&
-      quantity > 0 &&
-      type.trim() !== "" &&
+      title?.trim() !== "" &&
+      description?.trim() !== "" &&
+      !isNaN(Number(quantity)) && Number(quantity) > 0 &&
+      type?.trim() !== "" &&
       fileUrl !== null &&
       !isUploading
     ) {
@@ -118,7 +97,7 @@ const AddDish: FC = () => {
     }
   }, [inputField, fileUrl, isUploading]);
 
-  const UploadToDB = async (e: React.MouseEvent) => {
+  const UpdateDB = async (e: React.MouseEvent) => {
     e.preventDefault();
     const updatedTotalField = {
       ...inputField,
@@ -127,23 +106,24 @@ const AddDish: FC = () => {
     };
 
     try {
-      const { data } = await axios.post(
-        "http://localhost:5000/api/v1/menu",
+      const {data} = await axios.patch(
+        `http://localhost:5000/api/v1/menu/${paramId}`,
         updatedTotalField
       );
-      if (data) {
-        setInputField({
-          title: "",
-          description: "",
-          quantity: 0,
-          type: "",
-        });
-        setFileUrl(null);
-      }
+     if(data){
+      setInputField({
+        title: "",
+        description: "",
+        quantity: 0,
+        type: "",
+      })
+      setFileUrl(null)
+     }
     } catch (error) {
       console.error("Error uploading data", error);
     }
   };
+
 
   return (
     <div className="px-5 md:px-10 lg:px-[72px] 2xl:px-40 addNewMeshBackground">
@@ -155,11 +135,8 @@ const AddDish: FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2">
         <div>
           <div>
-            <div className="text-[#272D2F] font-lato text-[60px] font-extrabold leading-normal tracking-[-1.28px]">
-              Add New Dish
-            </div>
-            <div className="text-[#828282] font-lato text-[24px] font-normal leading-[36px] ">
-              Elevate Your Palate with Excellence
+            <div className="text-[#272D2F] font-lato text-[40px] font-extrabold leading-normal tracking-[-1.28px]">
+              Update Dish
             </div>
           </div>
           <div className="mt-[44px] font-inter">
@@ -174,7 +151,7 @@ const AddDish: FC = () => {
                   placeholder="Chicken Curry"
                   name="title"
                   onChange={HandleForm}
-                  value={inputField.title}
+                  value={inputField.title!}
                 />
               </div>
               <div className="flex flex-col mb-[24px]">
@@ -186,7 +163,7 @@ const AddDish: FC = () => {
                   placeholder="Enter Description within 10-20 words"
                   name="description"
                   onChange={HandleForm}
-                  value={inputField.description}
+                  value={inputField.description!}
                 />
               </div>
               <div className="grid grid-cols-2 mb-[24px] gap-5">
@@ -200,7 +177,7 @@ const AddDish: FC = () => {
                     placeholder="5"
                     name="quantity"
                     onChange={HandleForm}
-                    value={inputField.quantity}
+                    value={inputField.quantity!}
                   />
                 </div>
                 <div className="flex flex-col">
@@ -211,7 +188,7 @@ const AddDish: FC = () => {
                     className="px-[16px] py-[12px] border-[1px] rounded-[8px] border-[#E0E0E0] shadow-input text-[#828282]"
                     name="type"
                     onChange={HandleForm}
-                    value={inputField.type}
+                    value={inputField.type!}
                   >
                     {categories.map((item) => (
                       <option key={item.id} value={item.value}>
@@ -231,12 +208,6 @@ const AddDish: FC = () => {
                 >
                   {!fileUrl ? `+ Upload the dish thumbnail` : `File Attached`}
                 </div>
-                {/* <input
-              type="file"
-              // onChange={HandleUploadImage}
-              // ref={fileRef}
-              hidden
-            /> */}
               </div>
               <IKContext
                 urlEndpoint={urlEndpoint}
@@ -257,26 +228,21 @@ const AddDish: FC = () => {
                 className={`bg-[#FF5F34] uppercase hover:bg-[#FF3600] rounded-[8px] text-[16px] w-full py-[10px] text-center text-white font-semibold leading-[30px] ${
                   isButtonDisabled ? "opacity-50 cursor-not-allowed" : ""
                 }`}
-                onClick={UploadToDB}
+                onClick={UpdateDB}
                 disabled={isButtonDisabled}
               >
-                Create Dish
+                Update Dish
               </button>
             </form>
           </div>
         </div>
-        <div
-          className="flex justify-center md:justify-end
-        "
-        >
-          <img
-            className="w-[70%] md:w-full xl:w-[80%] 2xl:w-[70%]"
-            src={manImage}
-          />
+        <div className="flex justify-center md:justify-end
+        ">
+        <img className="w-[70%] md:w-full xl:w-[80%] 2xl:w-[70%]" src={manImage} />
         </div>
       </div>
     </div>
   );
 };
 
-export default AddDish;
+export default UpdateDish;
